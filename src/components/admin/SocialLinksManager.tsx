@@ -88,10 +88,10 @@ export default function SocialLinksManager() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          platform: formData.name, // L'API attend 'platform' pas 'name'
+          platform: formData.name,
           url: formData.url,
           icon: formData.icon,
-          is_available: true // L'API attend 'is_available' pas 'is_active'
+          is_available: formData.is_active !== false ? 1 : 0
         }),
       });
 

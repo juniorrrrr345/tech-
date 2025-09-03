@@ -99,14 +99,14 @@ export async function POST(request: NextRequest) {
     let farm_id = body.farm_id;
     
     // Si on reçoit des noms au lieu d'IDs, les convertir
-    if (body.category && !category_id) {
+    if (body.category) {
       const catData = await executeSqlOnD1('SELECT id FROM categories WHERE name = ?', [body.category]);
       if (catData.success && catData.result?.[0]?.results?.[0]) {
         category_id = catData.result[0].results[0].id;
       }
     }
     
-    if (body.farm && !farm_id) {
+    if (body.farm) {
       const farmData = await executeSqlOnD1('SELECT id FROM farms WHERE name = ?', [body.farm]);
       if (farmData.success && farmData.result?.[0]?.results?.[0]) {
         farm_id = farmData.result[0].results[0].id;
