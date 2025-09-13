@@ -1,6 +1,7 @@
 'use client';
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Layout from "../../components/Layout";
 
 interface Product {
   id: number;
@@ -73,113 +74,106 @@ export default function Catalogue() {
 
   if (loading) {
     return (
-      <div className="catalogue">
+      <Layout>
         <div className="loading">Chargement...</div>
         <style jsx>{`
-          .catalogue {
-            padding: 20px;
-            background: #0a1a2f;
-            min-height: 100vh;
-            color: white;
+          .loading {
             display: flex;
             align-items: center;
             justify-content: center;
-          }
-          .loading {
+            height: 50vh;
             font-size: 18px;
             color: #4da6ff;
           }
         `}</style>
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="catalogue">
-      {/* Header */}
-      <div className="header">
-        <h1 className="title">Catalogue TECH+</h1>
-        <div className="filters">
-          <select 
-            className="filter" 
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          >
-            {categories.map((category) => (
-              <option key={category} value={category}>{category}</option>
-            ))}
-          </select>
-          <select 
-            className="filter"
-            value={selectedFarm}
-            onChange={(e) => setSelectedFarm(e.target.value)}
-          >
-            {farms.map((farm) => (
-              <option key={farm} value={farm}>{farm}</option>
-            ))}
-          </select>
+    <Layout>
+      <div className="catalogue">
+        {/* Bandeau titre */}
+        <div className="catalogue-header">
+          <h2>Catalogue</h2>
+          <div className="filters">
+            <select 
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              {categories.map((category) => (
+                <option key={category} value={category}>{category}</option>
+              ))}
+            </select>
+            <select 
+              value={selectedFarm}
+              onChange={(e) => setSelectedFarm(e.target.value)}
+            >
+              {farms.map((farm) => (
+                <option key={farm} value={farm}>{farm}</option>
+              ))}
+            </select>
+          </div>
         </div>
-      </div>
 
-      {/* Grille produits */}
-      <div className="grid">
-        {filteredProducts.map((product) => {
-          const { price, weight } = getMinPrice(product);
-          return (
-            <Link key={product.id} href={`/product/${product.id}`}>
-              <div className="card">
-                <img src={product.image_url || '/placeholder.jpg'} alt={product.name} className="card-img" />
-                <div className="card-info">
-                  <h3 className="card-title">{product.name}</h3>
-                  <p className="card-farm">{product.farm}</p>
-                  <p className="card-price">{price}€ / {weight}</p>
+        {/* Grille produits */}
+        <div className="grid">
+          {filteredProducts.map((product) => {
+            const { price, weight } = getMinPrice(product);
+            return (
+              <Link key={product.id} href={`/product/${product.id}`}>
+                <div className="card">
+                  <img src={product.image_url || '/placeholder.jpg'} alt={product.name} className="card-img" />
+                  <div className="card-info">
+                    <h3>{product.name}</h3>
+                    <p className="farm">{product.farm}</p>
+                    <p className="price">{price}€ / {weight}</p>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
-
-      {filteredProducts.length === 0 && (
-        <div className="no-products">
-          <p>Aucun produit trouvé</p>
+              </Link>
+            );
+          })}
         </div>
-      )}
+
+        {filteredProducts.length === 0 && (
+          <div className="no-products">
+            <p>Aucun produit trouvé</p>
+          </div>
+        )}
+      </div>
 
       <style jsx>{`
         .catalogue {
           padding: 20px;
-          background: #0a1a2f;
-          min-height: 100vh;
-          color: white;
         }
-        .header {
+        .catalogue-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 20px;
+          margin: 20px 0;
           flex-wrap: wrap;
           gap: 15px;
         }
-        .title {
+        .catalogue-header h2 {
           font-size: 28px;
           font-weight: bold;
           color: #4da6ff;
+          margin: 0;
         }
         .filters {
           display: flex;
           gap: 10px;
           flex-wrap: wrap;
         }
-        .filter {
-          padding: 8px 12px;
-          border-radius: 6px;
+        .filters select {
           background: #152842;
-          border: 1px solid #2a3f5f;
           color: white;
+          border: 1px solid #2a3f5f;
+          border-radius: 6px;
+          padding: 8px 12px;
           font-size: 14px;
         }
-        .filter:focus {
+        .filters select:focus {
           outline: none;
           border-color: #4da6ff;
         }
@@ -207,21 +201,18 @@ export default function Catalogue() {
           border-radius: 8px;
           margin-bottom: 10px;
         }
-        .card-info {
-          margin-top: 10px;
-        }
-        .card-title {
+        .card-info h3 {
           font-size: 16px;
           margin-bottom: 5px;
           font-weight: 600;
           line-height: 1.3;
         }
-        .card-farm {
+        .farm {
           font-size: 12px;
           color: #bbb;
           margin-bottom: 5px;
         }
-        .card-price {
+        .price {
           font-weight: bold;
           color: #4da6ff;
           font-size: 14px;
@@ -233,7 +224,7 @@ export default function Catalogue() {
           font-size: 18px;
         }
         @media (max-width: 768px) {
-          .header {
+          .catalogue-header {
             flex-direction: column;
             align-items: flex-start;
           }
@@ -243,6 +234,6 @@ export default function Catalogue() {
           }
         }
       `}</style>
-    </div>
+    </Layout>
   );
 }

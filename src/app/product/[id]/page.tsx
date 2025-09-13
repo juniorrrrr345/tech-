@@ -1,6 +1,7 @@
 'use client';
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Layout from "../../../components/Layout";
 
 interface Product {
   id: number;
@@ -45,47 +46,37 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
 
   if (loading) {
     return (
-      <div className="detail">
+      <Layout showBackButton={true}>
         <div className="loading">Chargement...</div>
         <style jsx>{`
-          .detail {
-            padding: 20px;
-            background: #0a1a2f;
-            min-height: 100vh;
-            color: white;
+          .loading {
             display: flex;
             align-items: center;
             justify-content: center;
-          }
-          .loading {
+            height: 50vh;
             font-size: 18px;
             color: #4da6ff;
           }
         `}</style>
-      </div>
+      </Layout>
     );
   }
 
   if (!product) {
     return (
-      <div className="detail">
+      <Layout showBackButton={true}>
         <div className="error">Produit non trouvé</div>
         <style jsx>{`
-          .detail {
-            padding: 20px;
-            background: #0a1a2f;
-            min-height: 100vh;
-            color: white;
+          .error {
             display: flex;
             align-items: center;
             justify-content: center;
-          }
-          .error {
+            height: 50vh;
             font-size: 18px;
             color: #ff6b6b;
           }
         `}</style>
-      </div>
+      </Layout>
     );
   }
 
@@ -96,45 +87,24 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
     .sort((a, b) => parseInt(a.weight) - parseInt(b.weight));
 
   return (
-    <div className="detail">
-      {/* Header */}
-      <div className="header">
-        <button onClick={() => router.back()} className="back">← Retour</button>
-        <h1 className="logo">TECH+ Paris</h1>
-      </div>
-
-      {/* Image principale + thumbnails */}
-      <div className="image-slider">
-        <div className="main-image-container">
-          {product.video_url ? (
-            <video 
-              src={product.video_url}
-              className="main-img"
-              controls
-              muted
-              playsInline
-            >
-              <source src={product.video_url} type="video/mp4" />
-              Vidéo non supportée
-            </video>
-          ) : (
-            <img 
-              src={selectedImage || product.image_url} 
-              alt={product.name} 
-              className="main-img" 
-            />
-          )}
-        </div>
-        
-        {/* Thumbnails si plusieurs images */}
-        {product.image_url && (
+    <Layout showBackButton={true}>
+      <div className="detail">
+        {/* Images */}
+        <div className="image-slider">
+          <img 
+            src={selectedImage || product.image_url} 
+            alt={product.name} 
+            className="main-img" 
+          />
           <div className="thumbs">
-            <img
-              src={product.image_url}
-              alt="main"
-              className={`thumb ${selectedImage === product.image_url ? "active" : ""}`}
-              onClick={() => setSelectedImage(product.image_url)}
-            />
+            {product.image_url && (
+              <img
+                src={product.image_url}
+                alt="main"
+                className={`thumb ${selectedImage === product.image_url ? "active" : ""}`}
+                onClick={() => setSelectedImage(product.image_url)}
+              />
+            )}
             {product.video_url && (
               <div
                 className={`thumb video-thumb ${selectedImage === product.video_url ? "active" : ""}`}
@@ -144,84 +114,39 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
               </div>
             )}
           </div>
-        )}
-      </div>
+        </div>
 
-      {/* Infos produit */}
-      <div className="info">
-        <h2 className="name">{product.name}</h2>
-        <p className="farm">Farm: {product.farm}</p>
-        <p className="category">Catégorie: {product.category}</p>
-        {product.description && (
-          <p className="description">{product.description}</p>
-        )}
-      </div>
-
-      {/* Prix disponibles */}
-      <div className="prices">
-        <h3 className="prices-title">Prix disponibles :</h3>
-        <div className="price-grid">
-          {priceList.map(({ weight, price }) => (
-            <div key={weight} className="price-item">
-              <span className="weight">{weight}</span>
-              <span className="price">{price}€</span>
-            </div>
-          ))}
+        {/* Infos */}
+        <div className="info">
+          <h2>{product.name} <span>🌿</span></h2>
+          <p>Farm: {product.farm}</p>
+          <p>Catégorie: {product.category}</p>
+          {product.description && (
+            <p className="description">{product.description}</p>
+          )}
+          <p className="price">{priceList[0]?.price || 0}€ / {priceList[0]?.weight || '10g'}</p>
         </div>
       </div>
 
       <style jsx>{`
         .detail {
           padding: 20px;
-          background: #0a1a2f;
-          min-height: 100vh;
-          color: white;
-        }
-        .header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 20px;
-        }
-        .logo {
-          font-size: 22px;
-          font-weight: bold;
-          color: #4da6ff;
-        }
-        .back {
-          background: #152842;
-          border: 1px solid #2a3f5f;
-          color: white;
-          cursor: pointer;
-          font-size: 16px;
-          padding: 8px 16px;
-          border-radius: 6px;
-          transition: all 0.2s ease;
-        }
-        .back:hover {
-          background: #2a3f5f;
-          border-color: #4da6ff;
         }
         .image-slider {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
+          text-align: center;
           margin-bottom: 20px;
-        }
-        .main-image-container {
-          width: 100%;
-          max-width: 400px;
-          margin-bottom: 15px;
         }
         .main-img {
           width: 100%;
+          max-width: 400px;
           height: 300px;
           object-fit: cover;
           border-radius: 12px;
+          margin-bottom: 15px;
         }
         .thumbs {
           display: flex;
-          gap: 8px;
+          gap: 10px;
           justify-content: center;
           flex-wrap: wrap;
         }
@@ -230,8 +155,8 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
           height: 60px;
           object-fit: cover;
           border-radius: 6px;
-          cursor: pointer;
           opacity: 0.6;
+          cursor: pointer;
           transition: all 0.2s ease;
           border: 2px solid transparent;
         }
@@ -245,6 +170,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
           align-items: center;
           justify-content: center;
           border: 2px solid #2a3f5f;
+          border-radius: 6px;
         }
         .video-thumb.active {
           border-color: #4da6ff;
@@ -260,73 +186,32 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
           border-radius: 12px;
           border: 1px solid #2a3f5f;
         }
-        .name {
+        .info h2 {
           font-size: 24px;
           margin-bottom: 10px;
           color: #4da6ff;
         }
-        .farm {
+        .info p {
           color: #bbb;
           margin-bottom: 5px;
-        }
-        .category {
-          color: #bbb;
-          margin-bottom: 10px;
         }
         .description {
-          color: #ddd;
+          color: #ddd !important;
           line-height: 1.5;
-          margin-top: 10px;
-        }
-        .prices {
-          margin-top: 20px;
-          background: #152842;
-          padding: 20px;
-          border-radius: 12px;
-          border: 1px solid #2a3f5f;
-        }
-        .prices-title {
-          font-size: 18px;
-          margin-bottom: 15px;
-          color: #4da6ff;
-        }
-        .price-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-          gap: 10px;
-        }
-        .price-item {
-          background: #0a1a2f;
-          padding: 12px;
-          border-radius: 8px;
-          text-align: center;
-          border: 1px solid #2a3f5f;
-        }
-        .weight {
-          display: block;
-          font-size: 14px;
-          color: #bbb;
-          margin-bottom: 5px;
+          margin-top: 10px !important;
         }
         .price {
-          font-weight: bold;
-          color: #4da6ff;
-          font-size: 16px;
+          font-size: 20px !important;
+          font-weight: bold !important;
+          color: #4da6ff !important;
+          margin-top: 10px !important;
         }
         @media (max-width: 768px) {
-          .header {
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-start;
-          }
           .main-img {
             height: 250px;
           }
-          .price-grid {
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-          }
         }
       `}</style>
-    </div>
+    </Layout>
   );
 }
