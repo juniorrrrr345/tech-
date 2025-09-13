@@ -25,7 +25,18 @@ export default function HomePage() {
   
   // États pour les données - Initialiser avec des valeurs par défaut
   const [loading, setLoading] = useState(true); // Toujours true au départ
+  const [loadingStage, setLoadingStage] = useState(1); // 1 = logo seul, 2 = interface complète
   const [settings, setSettings] = useState<any>(null);
+
+  // Gestion des étapes de chargement
+  useEffect(() => {
+    // Étape 1 : Logo seul pendant 1.5 secondes
+    const stage1Timer = setTimeout(() => {
+      setLoadingStage(2); // Passer à l'étape 2
+    }, 1500);
+
+    return () => clearTimeout(stage1Timer);
+  }, []);
 
   // Charger les settings immédiatement pour l'image de chargement
   useEffect(() => {
@@ -238,7 +249,7 @@ export default function HomePage() {
     }
   };
 
-  // Écran de chargement tech moderne
+  // Écran de chargement tech moderne en deux étapes
   if (loading) {
     return (
       <div className="min-h-screen relative overflow-hidden">
@@ -255,24 +266,28 @@ export default function HomePage() {
         <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
           <div className="text-center">
             
-            {/* Logo carré avec effet orbital */}
+            {/* Logo carré - Étape 1 : Logo seul, Étape 2 : Avec effet orbital */}
             <div className="relative mb-12">
-              {/* Effet orbital - lignes fines lumineuses */}
-              <div className="absolute inset-0 w-48 h-48 mx-auto">
-                {/* Cercle orbital extérieur */}
-                <div className="absolute inset-0 border border-blue-300/30 rounded-full animate-spin" style={{ animationDuration: '8s' }}></div>
-                <div className="absolute inset-2 border border-green-300/20 rounded-full animate-spin" style={{ animationDuration: '6s', animationDirection: 'reverse' }}></div>
-                <div className="absolute inset-4 border border-cyan-300/15 rounded-full animate-spin" style={{ animationDuration: '10s' }}></div>
-                
-                {/* Points lumineux sur l'orbite */}
-                <div className="absolute top-0 left-1/2 w-2 h-2 bg-blue-400 rounded-full transform -translate-x-1/2 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
-                <div className="absolute bottom-0 left-1/2 w-2 h-2 bg-green-400 rounded-full transform -translate-x-1/2 shadow-[0_0_10px_rgba(34,197,94,0.8)]" style={{ animationDelay: '1s' }}></div>
-                <div className="absolute left-0 top-1/2 w-2 h-2 bg-cyan-400 rounded-full transform -translate-y-1/2 shadow-[0_0_10px_rgba(6,182,212,0.8)]" style={{ animationDelay: '2s' }}></div>
-                <div className="absolute right-0 top-1/2 w-2 h-2 bg-emerald-400 rounded-full transform -translate-y-1/2 shadow-[0_0_10px_rgba(16,185,129,0.8)]" style={{ animationDelay: '3s' }}></div>
-              </div>
+              {/* Effet orbital - lignes fines lumineuses (Étape 2 seulement) */}
+              {loadingStage === 2 && (
+                <div className="absolute inset-0 w-48 h-48 mx-auto">
+                  {/* Cercle orbital extérieur */}
+                  <div className="absolute inset-0 border border-blue-300/30 rounded-full animate-spin" style={{ animationDuration: '8s' }}></div>
+                  <div className="absolute inset-2 border border-green-300/20 rounded-full animate-spin" style={{ animationDuration: '6s', animationDirection: 'reverse' }}></div>
+                  <div className="absolute inset-4 border border-cyan-300/15 rounded-full animate-spin" style={{ animationDuration: '10s' }}></div>
+                  
+                  {/* Points lumineux sur l'orbite */}
+                  <div className="absolute top-0 left-1/2 w-2 h-2 bg-blue-400 rounded-full transform -translate-x-1/2 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
+                  <div className="absolute bottom-0 left-1/2 w-2 h-2 bg-green-400 rounded-full transform -translate-x-1/2 shadow-[0_0_10px_rgba(34,197,94,0.8)]" style={{ animationDelay: '1s' }}></div>
+                  <div className="absolute left-0 top-1/2 w-2 h-2 bg-cyan-400 rounded-full transform -translate-y-1/2 shadow-[0_0_10px_rgba(6,182,212,0.8)]" style={{ animationDelay: '2s' }}></div>
+                  <div className="absolute right-0 top-1/2 w-2 h-2 bg-emerald-400 rounded-full transform -translate-y-1/2 shadow-[0_0_10px_rgba(16,185,129,0.8)]" style={{ animationDelay: '3s' }}></div>
+                </div>
+              )}
               
               {/* Logo carré central */}
-              <div className="relative w-32 h-32 mx-auto bg-blue-900/80 backdrop-blur-sm rounded-2xl border border-blue-400/30 shadow-[0_0_30px_rgba(59,130,246,0.4)] flex items-center justify-center">
+              <div className={`relative w-32 h-32 mx-auto bg-blue-900/80 backdrop-blur-sm rounded-2xl border border-blue-400/30 shadow-[0_0_30px_rgba(59,130,246,0.4)] flex items-center justify-center transition-all duration-1000 ${
+                loadingStage === 1 ? 'animate-scaleIn' : 'animate-fadeIn'
+              }`}>
                 <div className="text-center">
                   <div className="text-4xl font-black text-white mb-1">
                     <span className="text-green-400">T</span>ech+
@@ -282,30 +297,24 @@ export default function HomePage() {
               </div>
             </div>
             
-            {/* Texte d'accueil */}
-            <div className="mb-8">
-              <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-lg">
-                Bienvenue
-              </h1>
-              <p className="text-lg text-gray-300 font-medium">
-                Finalisation<span className="animate-pulse">...</span>
-              </p>
-            </div>
-            
-            {/* Barre de progression */}
-            <div className="w-80 max-w-full mx-auto">
-              <div className="h-3 bg-gray-700/50 rounded-full overflow-hidden border border-gray-600/30 shadow-inner">
-                <div 
-                  className="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.6)] relative"
-                  style={{ 
-                    width: '75%',
-                    animation: 'loading-progress 2s ease-in-out infinite'
-                  }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+            {/* Texte d'accueil (Étape 2 seulement) */}
+            {loadingStage === 2 && (
+              <div className="mb-8 animate-fadeIn">
+                <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-lg">
+                  Bienvenue
+                </h1>
+                <p className="text-lg text-gray-300 font-medium mb-4">
+                  Préparation de l'interface
+                </p>
+                
+                {/* Trois points de chargement */}
+                <div className="flex justify-center space-x-1">
+                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-bounce" style={{ animationDelay: '200ms' }}></div>
+                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '400ms' }}></div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
