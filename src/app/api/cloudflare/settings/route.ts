@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // Configuration Cloudflare D1 hardcodée
 const CLOUDFLARE_CONFIG = {
   accountId: '7979421604bd07b3bd34d3ed96222512',
-  databaseId: 'c2f265db-7c5d-4f33-a5dd-f84c602a013d',
+  databaseId: '2ca2d221-5f5b-42fc-8048-8c950561849d',
   apiToken: 'ijkVhaXCw6LSddIMIMxwPL5CDAWznxip5x9I1bNW'
 };
 
@@ -29,13 +29,13 @@ async function executeSqlOnD1(sql: string, params: any[] = []) {
 // GET - Récupérer les paramètres
 export async function GET() {
   try {
-    console.log('🔍 GET settings MEXICAIN...');
+    console.log('🔍 GET settings TECH+...');
     
     const result = await executeSqlOnD1('SELECT * FROM settings WHERE id = 1');
     
     if (result.result?.[0]?.results?.length) {
       const settings = result.result[0].results[0];
-      console.log('✅ Settings MEXICAIN récupérés:', settings);
+      console.log('✅ Settings TECH+ récupérés:', settings);
       
       // Mapper les champs D1 vers le format attendu par le frontend
       const mappedSettings = {
@@ -43,8 +43,8 @@ export async function GET() {
         backgroundImage: settings.background_image,
         backgroundOpacity: settings.background_opacity || 20,
         backgroundBlur: settings.background_blur || 5,
-        shopTitle: settings.shop_title || 'MEXICAIN',
-        shopName: settings.shop_title || 'MEXICAIN',
+        shopTitle: settings.shop_title || 'TECH+',
+        shopName: settings.shop_title || 'TECH+',
         infoContent: settings.info_content,
         contactContent: settings.contact_content,
         whatsappLink: settings.whatsapp_link || '',
@@ -55,26 +55,26 @@ export async function GET() {
       
       return NextResponse.json(mappedSettings);
     } else {
-      // Retourner des paramètres par défaut MEXICAIN
+      // Retourner des paramètres par défaut TECH+
       const defaultSettings = {
         id: 1,
-        shop_name: 'MEXICAIN',
+        shop_name: 'TECH+',
         background_image: 'https://pub-b38679a01a274648827751df94818418.r2.dev/images/background-oglegacy.jpeg',
         background_opacity: 20,
         background_blur: 5,
-        info_content: 'Bienvenue chez MEXICAIN - Votre boutique premium',
-        contact_content: 'Contactez MEXICAIN pour toute question',
+        info_content: 'Bienvenue chez TECH+ - Votre boutique premium',
+        contact_content: 'Contactez TECH+ pour toute question',
         backgroundImage: 'https://pub-b38679a01a274648827751df94818418.r2.dev/images/background-oglegacy.jpeg',
         backgroundOpacity: 20,
         backgroundBlur: 5,
-        shopTitle: 'MEXICAIN',
-        shopName: 'MEXICAIN'
+        shopTitle: 'TECH+',
+        shopName: 'TECH+'
       };
       
       return NextResponse.json(defaultSettings);
     }
   } catch (error) {
-    console.error('❌ Erreur GET settings MEXICAIN:', error);
+    console.error('❌ Erreur GET settings TECH+:', error);
     return NextResponse.json(
       { error: 'Erreur serveur lors de la récupération des paramètres' },
       { status: 500 }
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
 // PUT - Mettre à jour les paramètres
 export async function PUT(request: NextRequest) {
   try {
-    console.log('🔧 PUT settings MEXICAIN...');
+    console.log('🔧 PUT settings TECH+...');
     const body = await request.json();
     
     const {
@@ -120,9 +120,9 @@ export async function PUT(request: NextRequest) {
     const finalBackgroundImage = background_image || backgroundImage;
     const finalBackgroundOpacity = background_opacity ?? backgroundOpacity ?? 20;
     const finalBackgroundBlur = background_blur ?? backgroundBlur ?? 5;
-    const finalInfoContent = info_content || infoContent || 'Bienvenue chez MEXICAIN';
-    const finalContactContent = contact_content || contactContent || 'Contactez MEXICAIN';
-    const finalShopTitle = shop_title || shopTitle || 'MEXICAIN';
+    const finalInfoContent = info_content || infoContent || 'Bienvenue chez TECH+';
+    const finalContactContent = contact_content || contactContent || 'Contactez TECH+';
+    const finalShopTitle = shop_title || shopTitle || 'TECH+';
     const finalWhatsappLink = whatsapp_link || whatsappLink || '';
     const finalWhatsappNumber = whatsapp_number || whatsappNumber || '';
     const finalScrollingText = scrolling_text || scrollingText || '';
@@ -185,20 +185,20 @@ export async function PUT(request: NextRequest) {
     const result = await executeSqlOnD1('SELECT * FROM settings WHERE id = 1');
     const settings = result.result[0].results[0];
     
-    console.log('✅ Settings MEXICAIN mis à jour:', settings);
+    console.log('✅ Settings TECH+ mis à jour:', settings);
 
     const mappedSettings = {
       ...settings,
       backgroundImage: settings.background_image,
       backgroundOpacity: settings.background_opacity,
       backgroundBlur: settings.background_blur,
-      shopTitle: 'MEXICAIN',
-      shopName: 'MEXICAIN'
+      shopTitle: 'TECH+',
+      shopName: 'TECH+'
     };
 
     return NextResponse.json(mappedSettings);
   } catch (error) {
-    console.error('❌ Erreur PUT settings MEXICAIN:', error);
+    console.error('❌ Erreur PUT settings TECH+:', error);
     return NextResponse.json(
       { error: 'Erreur serveur lors de la mise à jour des paramètres' },
       { status: 500 }

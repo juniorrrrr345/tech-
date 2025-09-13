@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // Configuration Cloudflare D1 hardcodée
 const CLOUDFLARE_CONFIG = {
   accountId: '7979421604bd07b3bd34d3ed96222512',
-  databaseId: 'c2f265db-7c5d-4f33-a5dd-f84c602a013d',
+  databaseId: '2ca2d221-5f5b-42fc-8048-8c950561849d',
   apiToken: 'ijkVhaXCw6LSddIMIMxwPL5CDAWznxip5x9I1bNW'
 };
 
@@ -45,16 +45,16 @@ export async function GET(
       
       switch (params.slug) {
         case 'info':
-          defaultTitle = 'À propos d\'MEXICAIN';
-          defaultContent = 'Bienvenue chez MEXICAIN - Votre boutique premium de produits d\'exception.';
+          defaultTitle = 'À propos d\'TECH+';
+          defaultContent = 'Bienvenue chez TECH+ - Votre boutique premium de produits d\'exception.';
           break;
         case 'contact':
-          defaultTitle = 'Contact MEXICAIN';
-          defaultContent = 'Contactez-nous pour toute question concernant nos produits MEXICAIN.';
+          defaultTitle = 'Contact TECH+';
+          defaultContent = 'Contactez-nous pour toute question concernant nos produits TECH+.';
           break;
         default:
-          defaultTitle = 'Page MEXICAIN';
-          defaultContent = 'Contenu de la page MEXICAIN.';
+          defaultTitle = 'Page TECH+';
+          defaultContent = 'Contenu de la page TECH+.';
       }
       
       const defaultPage = {
