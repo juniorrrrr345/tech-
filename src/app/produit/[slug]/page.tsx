@@ -1,12 +1,49 @@
+"use client";
+import { useState, useEffect } from "react";
 import AppHeader from "@/components/AppHeader";
 import MediaCarousel from "@/components/MediaCarousel";
 import PriceBlock from "@/components/PriceBlock";
-import { getProduct } from "@/lib/api";
+import { Product } from "@/types/product";
 
-export const revalidate = 60;
+export default function ProductPage({ params }:{ params:{ slug:string } }) {
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
 
-export default async function ProductPage({ params }:{ params:{ slug:string } }) {
-  const p = await getProduct(params.slug);
+  useEffect(() => {
+    const loadProduct = async () => {
+      try {
+        const response = await fetch(`/api/cloudflare/products/${params.slug}`);
+        if (response.ok) {
+          const data = await response.json();
+          setProduct(data.product);
+        }
+      } catch (error) {
+        console.error("Erreur lors du chargement du produit:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProduct();
+  }, [params.slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#07132a] flex items-center justify-center">
+        <div className="text-white text-xl">Chargement...</div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-[#07132a] flex items-center justify-center">
+        <div className="text-white text-xl">Produit non trouvé</div>
+      </div>
+    );
+  }
+
+  const p = product;
 
   return (
     <div className="min-h-screen bg-[#07132a] text-white">

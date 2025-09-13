@@ -1,17 +1,30 @@
 import { Product } from "@/types/product";
 
-const BASE = (process.env.NEXT_PUBLIC_PRODUCTS_URL ?? "").replace(/\/$/, "");
-
+// Utiliser les APIs Cloudflare existantes
 export async function getProducts(): Promise<Product[]> {
-  const url = BASE ? `${BASE}` : "/api/products";
-  const r = await fetch(url, { next: { revalidate: 60 } });
-  if (!r.ok) throw new Error("Produits introuvables");
-  return r.json();
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/cloudflare/products`, {
+      next: { revalidate: 60 }
+    });
+    if (!response.ok) throw new Error("Produits introuvables");
+    const data = await response.json();
+    return data.products || [];
+  } catch (error) {
+    console.error("Erreur lors de la récupération des produits:", error);
+    return [];
+  }
 }
 
 export async function getProduct(slug: string): Promise<Product> {
-  const url = BASE ? `${BASE}/${slug}` : `/api/products/${slug}`;
-  const r = await fetch(url, { next: { revalidate: 60 } });
-  if (!r.ok) throw new Error("Produit introuvable");
-  return r.json();
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/cloudflare/products/${slug}`, {
+      next: { revalidate: 60 }
+    });
+    if (!response.ok) throw new Error("Produit introuvable");
+    const data = await response.json();
+    return data.product;
+  } catch (error) {
+    console.error("Erreur lors de la récupération du produit:", error);
+    throw error;
+  }
 }

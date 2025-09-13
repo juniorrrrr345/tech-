@@ -1,15 +1,33 @@
+"use client";
+import { useState, useEffect } from "react";
 import AppHeader from "@/components/AppHeader";
 import FiltersBar from "@/components/FiltersBar";
 import ProductCard from "@/components/ProductCard";
-import { getProducts } from "@/lib/api";
 import { Product } from "@/types/product";
 
-export const revalidate = 60;
+export default function Page() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchParams, setSearchParams] = useState<{category?: string; farm?: string}>({});
 
-export default async function Page({ searchParams }:{
-  searchParams?: {category?: string; farm?: string}
-}) {
-  const products = await getProducts();
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const response = await fetch('/api/cloudflare/products');
+        if (response.ok) {
+          const data = await response.json();
+          setProducts(data.products || []);
+        }
+      } catch (error) {
+        console.error("Erreur lors du chargement des produits:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []);
+
   const categories = Array.from(new Set(products.map(p=>p.category).filter(Boolean))) as string[];
   const farms = Array.from(new Map(products.map(p=>[p.farm?.id, p.farm])).values()).filter(Boolean) as Product["farm"][];
 
@@ -18,6 +36,14 @@ export default async function Page({ searchParams }:{
     const okFarm = !searchParams?.farm || p.farm?.id === searchParams.farm;
     return okCat && okFarm;
   });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#07132a] flex items-center justify-center">
+        <div className="text-white text-xl">Chargement...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#07132a]">
