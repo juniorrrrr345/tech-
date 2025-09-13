@@ -343,37 +343,52 @@ export default function HomePage() {
                 onClose={() => setSelectedProduct(null)} 
               />
             ) : (
-              <div className="pt-2">
-                <CategoryFilter
-                  categories={categories}
-                  farms={farms}
-                  selectedCategory={selectedCategory}
-                  selectedFarm={selectedFarm}
-                  onCategoryChange={setSelectedCategory}
-                  onFarmChange={setSelectedFarm}
-                />
-                
-                <main className="pt-3 pb-24 sm:pb-28 px-3 sm:px-4 lg:px-6 xl:px-8 max-w-7xl mx-auto">
-
-                {/* Affichage des produits */}
-                {filteredProducts.length === 0 && products.length > 0 ? (
-                  <div className="text-center py-8 sm:py-12">
-                    <p className="text-white/60 text-base sm:text-lg">
-                      Aucun produit ne correspond à vos critères de recherche
-                    </p>
-                  </div>
-                ) : filteredProducts.length > 0 ? (
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-                    {filteredProducts.map((product) => (
-                      <ProductCard
-                        key={product._id}
-                        product={product}
-                        onClick={() => setSelectedProduct(product)}
-                      />
+              <div className="bg-[#0B1630] min-h-screen">
+                {/* Filtres en haut */}
+                <div className="flex justify-between items-center p-4 bg-[#111F3A] mx-4 mt-4 rounded-xl">
+                  <select 
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="bg-gray-800 text-white rounded-lg px-3 py-2 border border-gray-600 focus:border-blue-500 focus:outline-none"
+                  >
+                    <option value="Toutes les catégories">Toutes les catégories</option>
+                    {categories.slice(1).map((category) => (
+                      <option key={category} value={category}>{category}</option>
                     ))}
-                  </div>
-                ) : null}
-                </main>
+                  </select>
+                  
+                  <select 
+                    value={selectedFarm}
+                    onChange={(e) => setSelectedFarm(e.target.value)}
+                    className="bg-gray-800 text-white rounded-lg px-3 py-2 border border-gray-600 focus:border-blue-500 focus:outline-none"
+                  >
+                    <option value="Toutes les farms">Toutes les farms</option>
+                    {farms.slice(1).map((farm) => (
+                      <option key={farm} value={farm}>{farm}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                {/* Produits en grille 2 colonnes */}
+                <div className="p-4">
+                  {filteredProducts.length === 0 && products.length > 0 ? (
+                    <div className="text-center py-8">
+                      <p className="text-white/60 text-lg">
+                        Aucun produit ne correspond à vos critères de recherche
+                      </p>
+                    </div>
+                  ) : filteredProducts.length > 0 ? (
+                    <div className="grid grid-cols-2 gap-4">
+                      {filteredProducts.map((product) => (
+                        <ProductCard
+                          key={product._id}
+                          product={product}
+                          onClick={() => setSelectedProduct(product)}
+                        />
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
               </div>
             )}
         </div>
