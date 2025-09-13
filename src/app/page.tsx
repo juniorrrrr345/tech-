@@ -238,50 +238,72 @@ export default function HomePage() {
     }
   };
 
-  // Écran de chargement avec fond de thème de la boutique
+  // Écran de chargement tech moderne
   if (loading) {
     return (
-      <div className="main-container loading-container">
-        <div className="global-overlay"></div>
-        <div className="content-layer">
-          <div className="min-h-screen loading-screen flex items-center justify-center p-4">
-            <div className="text-center bg-black/60 backdrop-blur-md rounded-3xl p-8 sm:p-12 max-w-lg mx-auto border border-white/20">
-
-              
-              {/* Logo carré = image de fond de la boutique */}
-              <div className="mb-8">
-                <img 
-                  src={settings?.backgroundImage || "https://pub-b38679a01a274648827751df94818418.r2.dev/images/background-oglegacy.jpeg"}
-                  alt="TECH+" 
-                  className="h-32 sm:h-40 md:h-48 w-32 sm:w-40 md:w-48 mx-auto rounded-xl object-cover border-4 border-white/20"
-                  style={{ filter: 'drop-shadow(0 0 20px rgba(255,255,255,0.3))' }}
-                />
+      <div className="min-h-screen relative overflow-hidden">
+        {/* Arrière-plan avec dégradé diagonal bleu/vert */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-blue-800 to-green-600"></div>
+        
+        {/* Formes diffuses tech modernes */}
+        <div className="absolute top-20 left-10 w-32 h-32 bg-blue-400/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-24 h-24 bg-green-400/20 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute bottom-32 left-1/4 w-20 h-20 bg-cyan-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-20 right-1/3 w-16 h-16 bg-emerald-400/20 rounded-full blur-lg animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+        
+        {/* Contenu central */}
+        <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
+          <div className="text-center">
+            
+            {/* Logo carré avec effet orbital */}
+            <div className="relative mb-12">
+              {/* Effet orbital - lignes fines lumineuses */}
+              <div className="absolute inset-0 w-48 h-48 mx-auto">
+                {/* Cercle orbital extérieur */}
+                <div className="absolute inset-0 border border-blue-300/30 rounded-full animate-spin" style={{ animationDuration: '8s' }}></div>
+                <div className="absolute inset-2 border border-green-300/20 rounded-full animate-spin" style={{ animationDuration: '6s', animationDirection: 'reverse' }}></div>
+                <div className="absolute inset-4 border border-cyan-300/15 rounded-full animate-spin" style={{ animationDuration: '10s' }}></div>
+                
+                {/* Points lumineux sur l'orbite */}
+                <div className="absolute top-0 left-1/2 w-2 h-2 bg-blue-400 rounded-full transform -translate-x-1/2 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
+                <div className="absolute bottom-0 left-1/2 w-2 h-2 bg-green-400 rounded-full transform -translate-x-1/2 shadow-[0_0_10px_rgba(34,197,94,0.8)]" style={{ animationDelay: '1s' }}></div>
+                <div className="absolute left-0 top-1/2 w-2 h-2 bg-cyan-400 rounded-full transform -translate-y-1/2 shadow-[0_0_10px_rgba(6,182,212,0.8)]" style={{ animationDelay: '2s' }}></div>
+                <div className="absolute right-0 top-1/2 w-2 h-2 bg-emerald-400 rounded-full transform -translate-y-1/2 shadow-[0_0_10px_rgba(16,185,129,0.8)]" style={{ animationDelay: '3s' }}></div>
               </div>
               
-              <p className="text-2xl text-white mb-8 font-semibold drop-shadow-lg animate-pulse">
-                TECH+
-              </p>
-              
-              {/* Nouvelle barre de chargement style néon */}
-              <div className="w-80 max-w-full mx-auto mb-8">
-                <div className="h-4 bg-black/50 rounded-full overflow-hidden border border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.5)]">
-                  <div className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full shadow-lg animate-loading-bar relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+              {/* Logo carré central */}
+              <div className="relative w-32 h-32 mx-auto bg-blue-900/80 backdrop-blur-sm rounded-2xl border border-blue-400/30 shadow-[0_0_30px_rgba(59,130,246,0.4)] flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-4xl font-black text-white mb-1">
+                    <span className="text-green-400">T</span>ech+
                   </div>
+                  <div className="text-xs text-blue-300 font-medium">Paris</div>
                 </div>
-                <div className="mt-2 text-sm text-blue-300 font-medium drop-shadow-md animate-pulse">Chargement de TECH+...</div>
               </div>
-              
-              {/* Animation de particules style diamant */}
-              <div className="flex justify-center gap-3 mb-8">
-                <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce shadow-[0_0_10px_rgba(96,165,250,0.8)]" style={{ animationDelay: '0ms' }}></div>
-                <div className="w-3 h-3 bg-purple-500 rounded-full animate-bounce shadow-[0_0_10px_rgba(168,85,247,0.8)]" style={{ animationDelay: '200ms' }}></div>
-                <div className="w-3 h-3 bg-pink-500 rounded-full animate-bounce shadow-[0_0_10px_rgba(236,72,153,0.8)]" style={{ animationDelay: '400ms' }}></div>
-              </div>
-              
-              {/* Footer */}
-              <div className="text-white text-sm font-medium drop-shadow-md">
-                <p>TECH+</p>
+            </div>
+            
+            {/* Texte d'accueil */}
+            <div className="mb-8">
+              <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-lg">
+                Bienvenue
+              </h1>
+              <p className="text-lg text-gray-300 font-medium">
+                Finalisation<span className="animate-pulse">...</span>
+              </p>
+            </div>
+            
+            {/* Barre de progression */}
+            <div className="w-80 max-w-full mx-auto">
+              <div className="h-3 bg-gray-700/50 rounded-full overflow-hidden border border-gray-600/30 shadow-inner">
+                <div 
+                  className="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.6)] relative"
+                  style={{ 
+                    width: '75%',
+                    animation: 'loading-progress 2s ease-in-out infinite'
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+                </div>
               </div>
             </div>
           </div>

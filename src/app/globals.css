@@ -627,6 +627,41 @@ html, body {
   animation: spin-slow 8s linear infinite;
 }
 
+/* Animations pour la page de chargement tech moderne */
+@keyframes loading-progress {
+  0% {
+    width: 0%;
+  }
+  50% {
+    width: 75%;
+  }
+  100% {
+    width: 75%;
+  }
+}
+
+@keyframes orbital-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(59,130,246,0.8);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(59,130,246,1), 0 0 30px rgba(59,130,246,0.6);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 .animate-shimmer {
-  animation: shimmer 1.5s ease-in-out infinite;
+  animation: shimmer 2s infinite;
+}
+
+.animate-orbital-glow {
+  animation: orbital-glow 2s ease-in-out infinite;
 }
